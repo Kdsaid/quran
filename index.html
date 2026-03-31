@@ -1,33 +1,97 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-    <title>Qur'an Website</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: green;
-        }
-        .ayah {
-            font-size: 22px;
-            margin: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>رفع وقراءة ملفات PDF</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #22c55e;
+}
+
+input {
+    margin: 20px;
+}
+
+.file-list {
+    margin-top: 20px;
+}
+
+.file-item {
+    background: #1e293b;
+    margin: 10px auto;
+    padding: 15px;
+    max-width: 400px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.file-item:hover {
+    background: #334155;
+}
+
+iframe {
+    margin-top: 20px;
+    width: 90%;
+    height: 500px;
+    border: none;
+}
+</style>
 </head>
+
 <body>
 
-<h1>📖 Qur'an Website</h1>
+<h1>📄 رفع وقراءة ملفات PDF</h1>
 
-<p>Welcome! Read and reflect on the Qur'an.</p>
+<input type="file" id="fileInput" accept="application/pdf">
 
-<div class="ayah">
-    "Indeed, this Qur'an guides to that which is most suitable."  
-    <br>— Surah Al-Isra (17:9)
-</div>
+<div class="file-list" id="fileList"></div>
+
+<iframe id="viewer"></iframe>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const fileList = document.getElementById("fileList");
+const viewer = document.getElementById("viewer");
+
+let files = [];
+
+fileInput.addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+
+    files.push({ name: file.name, url });
+
+    renderFiles();
+});
+
+function renderFiles() {
+    fileList.innerHTML = "";
+
+    files.forEach((file, index) => {
+        const div = document.createElement("div");
+        div.className = "file-item";
+        div.innerText = file.name;
+
+        div.onclick = () => {
+            viewer.src = file.url;
+        };
+
+        fileList.appendChild(div);
+    });
+}
+</script>
 
 </body>
 </html>
